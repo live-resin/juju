@@ -109,7 +109,7 @@
                 music.play();
                 var fadeAudio = setInterval(function() {
                     if (music.volume < 1) {
-                        music.volume += 0.1;
+                        music.volume = Math.min(1, music.volume + 0.1); // Ensure volume does not exceed 1
                     } else {
                         clearInterval(fadeAudio);
                     }
