@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Bio Link</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #000;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+        #overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 10;
+            transition: opacity 1s ease;
+        }
+        #overlay img {
+            width: 200px; /* Adjust the size as needed */
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <div id="overlay" onclick="playMusic()">
+        <img src="files/Logo.png" alt="Click me">
+    </div>
+    <audio id="music" src="files/Background.mp3"></audio>
+    <script>
+        function playMusic() {
+            var overlay = document.getElementById('overlay');
+            var music = document.getElementById('music');
+            
+            // Start music with 0 volume and fade in
+            music.volume = 0;
+            music.play();
+            
+            // Fade out overlay
+            overlay.style.opacity = 0;
+            
+            // Fade in music
+            var fadeAudio = setInterval(function() {
+                if (music.volume < 1) {
+                    music.volume += 0.1;
+                } else {
+                    clearInterval(fadeAudio);
+                }
+            }, 100); // Increase volume every 100ms over 1 second
+
+            // Remove overlay after fade out
+            setTimeout(function() {
+                overlay.style.display = 'none';
+            }, 1000); // Match this time to the CSS transition duration
+        }
+    </script>
+</body>
+</html>
