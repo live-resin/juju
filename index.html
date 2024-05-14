@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Music Bio Link</title>
+    <title>juju</title>
     <style>
         body, html {
             height: 100%;
@@ -28,44 +28,92 @@
             align-items: center;
             cursor: pointer;
             z-index: 10;
+            background: url('files/Background.gif') no-repeat center center;
+            background-size: cover;
             transition: opacity 1s ease;
         }
         #overlay img {
             width: 200px; /* Adjust the size as needed */
             height: auto;
+            transition: opacity 1s ease, transform 0.7s ease; /* Added transform transition */
+        }
+        #content {
+            display: none;
+            color: #fff;
+            text-align: center;
+        }
+        .logo-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
     </style>
 </head>
 <body>
-    <div id="overlay" onclick="playMusic()">
-        <img src="files/Logo.png" alt="Click me">
+    <div id="overlay" onclick="playAnimation()">
+        <div class="logo-container">
+            <img src="files/Logo.png" alt="Click me" id="logo">
+            <img src="files/Logo1.png" alt="Click me" id="logo1">
+        </div>
+    </div>
+    <div id="content">
+        <h1>juju isn't ready yet!</h1>
     </div>
     <audio id="music" src="files/Background.mp3"></audio>
+    <audio id="notification" src="files/Notification.wav"></audio>
     <script>
-        function playMusic() {
+        function playAnimation() {
             var overlay = document.getElementById('overlay');
+            var logo = document.getElementById('logo');
+            var logo1 = document.getElementById('logo1');
             var music = document.getElementById('music');
-            
-            // Start music with 0 volume and fade in
-            music.volume = 0;
-            music.play();
-            
-            // Fade out overlay
-            overlay.style.opacity = 0;
-            
-            // Fade in music
-            var fadeAudio = setInterval(function() {
-                if (music.volume < 1) {
-                    music.volume += 0.1;
-                } else {
-                    clearInterval(fadeAudio);
-                }
-            }, 100); // Increase volume every 100ms over 1 second
+            var content = document.getElementById('content');
+            var notification = document.getElementById('notification');
 
-            // Remove overlay after fade out
+            // Delay for 0.2 seconds before playing notification sound
             setTimeout(function() {
-                overlay.style.display = 'none';
-            }, 1000); // Match this time to the CSS transition duration
+                notification.play();
+            }, 200);
+
+            // Fade out logo1 for 1 second
+            setTimeout(function() {
+                logo1.style.opacity = 0;
+            }, 0);
+
+            // Move both logos down for 0.3 seconds until logo is in the middle
+            setTimeout(function() {
+                logo.style.transform = "translateY(50px)";
+                logo1.style.transform = "translateY(50px)";
+            }, 300);
+
+            // At this point, only the logo is left, wait 0.7 seconds and then fade out
+            setTimeout(function() {
+                logo.style.opacity = 0;
+                // Start fading in the music
+                fadeMusicIn();
+            }, 1000); // Delay of 0.7 seconds added here
+
+            // Finally, fade out the overlay after 1 second
+            setTimeout(function() {
+                overlay.style.opacity = 0;
+                setTimeout(function() {
+                    overlay.style.display = 'none';
+                    content.style.display = 'block';
+                }, 1000);
+            }, 1700); // Updated delay here
+
+            function fadeMusicIn() {
+                // Start music with 0 volume and fade in
+                music.volume = 0;
+                music.play();
+                var fadeAudio = setInterval(function() {
+                    if (music.volume < 1) {
+                        music.volume += 0.1;
+                    } else {
+                        clearInterval(fadeAudio);
+                    }
+                }, 100); // Increase volume every 100ms over 1 second
+            }
         }
     </script>
 </body>
