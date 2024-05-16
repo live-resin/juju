@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>juju</title>
-    <link rel="icon" href="files/Logo.png" type="image/png">
+    <title>Luminaria</title>
+    <link rel="icon" href="files/images/Logo.png" type="image/png">
     <style>
         body, html {
             height: 100%;
@@ -29,7 +29,7 @@
             align-items: center;
             cursor: pointer;
             z-index: 10;
-            background: url('files/Background.gif') no-repeat center center;
+            background: url('files/images/Background.gif') no-repeat center center;
             background-size: cover;
             transition: opacity 1s ease;
         }
@@ -53,16 +53,48 @@
 <body>
     <div id="overlay" onclick="playAnimation()">
         <div class="logo-container">
-            <img src="files/Logo.png" alt="Click me" id="logo">
-            <img src="files/Logo1.png" alt="Click me" id="logo1">
+            <img src="files/images/Logo.png" alt="Click me" id="logo">
+            <img src="files/images/Logo1.png" alt="Click me" id="logo1">
         </div>
     </div>
     <div id="content">
-        <h1>juju isn't ready yet!</h1>
+        <h1>Luminaria isn't ready yet!</h1>
     </div>
-    <audio id="music" src="files/Background.mp3"></audio>
-    <audio id="notification" src="files/Notification.wav"></audio>
+    <audio id="music"></audio>
+    <audio id="notification" src="files/audio/Notification.wav"></audio>
     <script>
+        var musicFiles = [
+            'files/audio/music/300hearts/crate unboxing.mp3',
+            'files/audio/music/300hearts/dopio.mp3',
+            'files/audio/music/300hearts/gardevoir.mp3',
+            'files/audio/music/300hearts/melt.mp3',
+            'files/audio/music/300hearts/milan.mp3',
+            'files/audio/music/300hearts/potato.mp3',
+            'files/audio/music/300hearts/sixty.mp3',
+            'files/audio/music/300hearts/spork.mp3',
+            'files/audio/music/seraph\'s vault/act ii date @ 8.mp3',
+            'files/audio/music/seraph\'s vault/Nina!.mp3',
+            'files/audio/music/seraph\'s vault/sick.mp3',
+            'files/audio/music/seraph\'s vault/The Law of Recognition.mp3',
+            'files/audio/music/seraph\'s vault/XTAYALIVE.mp3'
+        ];
+
+        var playedSongs = [];
+
+        function getRandomMusic() {
+            if (playedSongs.length === musicFiles.length) {
+                playedSongs = [];
+            }
+
+            var remainingSongs = musicFiles.filter(function(song) {
+                return playedSongs.indexOf(song) === -1;
+            });
+
+            var randomSong = remainingSongs[Math.floor(Math.random() * remainingSongs.length)];
+            playedSongs.push(randomSong);
+            return randomSong;
+        }
+
         function playAnimation() {
             var overlay = document.getElementById('overlay');
             var logo = document.getElementById('logo');
@@ -70,6 +102,9 @@
             var music = document.getElementById('music');
             var content = document.getElementById('content');
             var notification = document.getElementById('notification');
+
+            // Set a random music file
+            music.src = getRandomMusic();
 
             // Delay for 0.2 seconds before playing notification sound
             setTimeout(function() {
@@ -115,6 +150,12 @@
                     }
                 }, 100); // Increase volume every 100ms over 1 second
             }
+
+            // Set up event listener to play a new song when the current one ends
+            music.addEventListener('ended', function() {
+                music.src = getRandomMusic();
+                music.play();
+            });
         }
     </script>
 </body>
